@@ -5,32 +5,44 @@ import TableCell from '@mui/material/TableCell';
 
 import Node, { NodeShape } from '../node';
 import TreeShape from './TreeShape';
-import { getNode, collapseNodes, deleteNode } from './utils';
+import {
+  getNode,
+  collapseNodes,
+  deleteNode,
+  deleteBranch,
+  toggleNode,
+} from './utils';
 
 const useStyles = makeStyles()(({ spacing }) => ({
   cell: {
     border: 'none',
+    verticalAlign: 'top',
   },
 }));
 
 const TreeNode: React.FC<{
   id: number,
   nodes: NodeShape[],
-  setNodes: (value: NodeShape[]) => void,
   tree: TreeShape,
+  treeBr: TreeShape,
+  setNodes: (value: NodeShape[]) => void,
+  setTree: (value: TreeShape) => void,
   depth: number,
   wrapInCell?: boolean | false,
   isLeaf?: boolean | false,
 }> = ({
   id,
   nodes,
-  setNodes,
   tree,
+  treeBr,
+  setNodes,
+  setTree,
   depth,
   wrapInCell,
   isLeaf,
 }) => {
   const { classes, cx } = useStyles();
+
   const node = getNode(id, nodes);
   if (!node) return null;
 
@@ -38,15 +50,30 @@ const TreeNode: React.FC<{
     [...collapseNodes(
       id,
       nodes,
-      tree,
+      treeBr,
     )],
   );
-  const onDelete = () => setNodes(
-    [...deleteNode(
+  const onToggleSingle = () => setNodes(
+    [...toggleNode(
       id,
       nodes,
     )],
   );
+  const onDelete = () => {
+    setTree(
+      structuredClone({...deleteBranch(
+        id,
+        tree,
+      )}),
+    );
+    setNodes(
+      [...deleteNode(
+        id,
+        nodes,
+      )],
+    );
+  };
+
   const {
     firstName,
     lastName,
@@ -68,6 +95,7 @@ const TreeNode: React.FC<{
       email={email}
       expanded={expanded}
       depth={depth}
+      onToggleSingle={onToggleSingle}
       onCollapse={onCollapse}
       onDelete={onDelete}
       isLeaf={isLeaf}

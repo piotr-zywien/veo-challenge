@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { makeStyles } from 'tss-react/mui';
 import Table from '@mui/material/Table';
@@ -23,23 +23,31 @@ const useStyles = makeStyles()(({ spacing }) => ({
 const Tree: React.FC<{
   nodes: NodeShape[],
   tree: TreeShape,
+  treeBr: TreeShape,
   setNodes: (value: NodeShape[]) => void,
+  setTree: (value: TreeShape) => void,
   depth?: number,
 }> = ({
   nodes,
   tree,
+  treeBr,
   setNodes,
+  setTree,
   depth = 0,
 }) => {
   const { cx, classes } = useStyles();
-  const { id, children } = tree;
+  const { id, children } = treeBr;
 
-  if (isLeaf(tree)) return (
+  useEffect(() => {}, [tree, treeBr])
+
+  if (isLeaf(treeBr)) return (
     <TreeNode
       id={id}
       nodes={nodes}
-      setNodes={setNodes}
       tree={tree}
+      treeBr={treeBr}
+      setNodes={setNodes}
+      setTree={setTree}
       depth={depth}
       isLeaf
     />
@@ -52,8 +60,10 @@ const Tree: React.FC<{
           <TreeNode
             id={id}
             nodes={nodes}
-            setNodes={setNodes}
             tree={tree}
+            treeBr={treeBr}
+            setNodes={setNodes}
+            setTree={setTree}
             depth={depth}
             wrapInCell
           />
@@ -62,7 +72,9 @@ const Tree: React.FC<{
           children={children}
           nodes={nodes}
           tree={tree}
+          treeBr={treeBr}
           setNodes={setNodes}
+          setTree={setTree}
           depth={depth}
         />
       </TableBody>

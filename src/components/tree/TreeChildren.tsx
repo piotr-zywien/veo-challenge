@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 import { makeStyles } from 'tss-react/mui';
 import TableRow from '@mui/material/TableRow';
@@ -21,6 +21,7 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
   },
   cell: {
     border: 'none',
+    verticalAlign: 'top',
   },
   hidden: {
     opacity: 0,
@@ -34,13 +35,17 @@ const TreeChildren: React.FC<{
   children: TreeShape[],
   nodes: NodeShape[],
   tree: TreeShape,
+  treeBr: TreeShape
   setNodes: (value: NodeShape[]) => void,
+  setTree: (value: TreeShape) => void,
   depth?: number,
 }> = ({
   children,
   nodes,
   tree,
+  treeBr,
   setNodes,
+  setTree,
   depth,
 }) => {
   const { cx, classes } = useStyles();
@@ -57,30 +62,34 @@ const TreeChildren: React.FC<{
   const [margin, setMargin] = useState<number>(null);
   const [width, setWidth] = useState<number>(null);
 
-  const getPoints = (ref: React.RefObject<HTMLElement>) => {
+  const getPoints = useCallback((ref: React.RefObject<HTMLElement>) => {
     const element = ref.current;
-    const parent = element.parentElement;
+    const parent = element && element.parentElement;
+
     const x = element && (element.offsetLeft + element.offsetWidth / 2);
     const p = parent && parent.offsetLeft;
+
     return { x, p };
-  }
+  }, [tree, treeBr]);
 
   useEffect(() => {
     if (fromRef) {
       setFrom(getPoints(fromRef));
     }
-  }, [fromRef])
+  }, [tree, treeBr, fromRef])
   useEffect(() => {
     if (toRef) {
       setTo(getPoints(toRef));
     }
-  }, [toRef]);
+  }, [tree, treeBr, toRef]);
   useEffect(() => {
     if (from && to) {
       setMargin(from.x - from.p)
       setWidth(to.x - from.x);
     }
   }, [
+    tree,
+    treeBr,
     from,
     to,
   ]);
@@ -88,7 +97,7 @@ const TreeChildren: React.FC<{
   return (
     <>
       <TableRow className={cx(classes.hidden, {
-        [classes.shown]: margin !== null && width !== null,
+        [classes.shown]: children.length > 1 && margin !== null && width !== null,
       })}>
         <TableCell
           padding="none"
@@ -115,7 +124,6 @@ const TreeChildren: React.FC<{
           if (index === children.length - 1) {
             ref = toRef;
           }
-
           return (
             <TableCell
               ref={ref}
@@ -124,8 +132,10 @@ const TreeChildren: React.FC<{
             >
               <Tree
                 nodes={nodes}
-                tree={child}
+                tree={tree}
+                treeBr={child}
                 setNodes={setNodes}
+                setTree={setTree}
                 depth={depth + 1}
               />
             </TableCell>

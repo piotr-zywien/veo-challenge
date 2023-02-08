@@ -10,7 +10,7 @@ export const isLeaf = (node: TreeShape) => {
 
 export const getNode = (id: number, nodes: NodeShape[]) => nodes.find(node => node.id === id) || null;
 
-export const getNodeId = (id: number, nodes: NodeShape[]) => nodes.findIndex(node => node.id === id);
+export const getNodeIndexById = (id: number, nodes: NodeShape[]) => nodes.findIndex(node => node.id === id);
 
 export const searchTree = (id: number, tree: TreeShape) => {
   if (tree.id === id) {
@@ -26,10 +26,34 @@ export const searchTree = (id: number, tree: TreeShape) => {
 };
 
 export const deleteNode = (id: number, nodes: NodeShape[]) => {
-  const index = nodes.findIndex((child) => child.id === id);
+  const index = getNodeIndexById(id, nodes);
   nodes.splice(index, 1);
   return nodes;
 }
+
+export const toggleNode = (id: number, nodes: NodeShape[]) => {
+  const index = getNodeIndexById(id, nodes);
+  nodes[index].expanded = !nodes[index].expanded;
+  return nodes;
+}
+
+export const deleteBranch = (id: number, tree: TreeShape) => {
+  const { children } = tree;
+
+  const $children: TreeShape[] = [];
+  if (children) {
+    children.forEach((child: TreeShape) => {
+      if (child.id !== id) {
+        $children.push(deleteBranch(id, child));
+      }
+    });
+  }
+
+  return {
+    ...tree,
+    children: $children,
+  };
+};
 
 export const getIds = (tree: TreeShape, ids: number[]) => {
   const { id, children } = tree;

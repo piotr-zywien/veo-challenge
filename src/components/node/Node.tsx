@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik, FormikProps } from 'formik';
 
 import { makeStyles } from 'tss-react/mui';
@@ -103,6 +103,7 @@ const Node: React.FC<NodeShape> = ({
   email,
   expanded,
   depth,
+  onToggleSingle,
   onCollapse,
   onDelete,
   isLeaf,
@@ -134,7 +135,10 @@ const Node: React.FC<NodeShape> = ({
       </div>
       <Table
         className={classes.table}
-        // onClick={() => setIsExpanded(!isExpanded)}
+        onClick={(event) => {
+          event.stopPropagation();
+          onToggleSingle();
+        }}
         onDoubleClick={(event) => {
           event.stopPropagation();
           onCollapse();

@@ -8,8 +8,9 @@ interface NodeShape {
   email: string,
   depth?: number,
   expanded: boolean,
-  onCollapse?: () => void;
-  onDelete?: () => void;
+  onToggleSingle?: () => void,
+  onCollapse?: () => void,
+  onDelete?: () => void,
   isLeaf?: boolean | false,
 }
 

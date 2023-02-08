@@ -30,6 +30,7 @@ const Edit: React.FC<EditShape> = ({
   };
   const onClick = (event: React.MouseEvent<HTMLInputElement>) => {
     event.stopPropagation();
+    event.preventDefault();
   };
 
   return (
