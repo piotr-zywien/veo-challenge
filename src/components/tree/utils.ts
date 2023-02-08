@@ -10,6 +10,8 @@ export const isLeaf = (node: TreeShape) => {
 
 export const getNode = (id: number, nodes: NodeShape[]) => nodes.find(node => node.id === id);
 
+export const getNodeId = (id: number, nodes: NodeShape[]) => nodes.findIndex(node => node.id === id);
+
 export const searchTree = (id: number, tree: TreeShape) => {
   if (tree.id === id) {
     return tree;
@@ -57,4 +59,4 @@ export const collapseNodes = (
   });
 
   return $nodes;
-}
+};

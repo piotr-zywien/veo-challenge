@@ -21,6 +21,7 @@ import schema from './schema';
 
 const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
   root: {
+    position: 'sticky',
     width: spacing(42),
     height: 'fit-content',
     borderWidth: 1,
@@ -33,6 +34,7 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     margin: spacing(4),
     marginTop: spacing(1),
     marginBottom: spacing(1),
+    backgroundColor: palette.common.white,
   },
   addButton: {
     color: palette.primary.light,
@@ -107,7 +109,11 @@ const Node: React.FC<NodeShape> = ({
     >
       <TableHead>
         <TableRow>
-          <TableCell colSpan={2}>
+          <TableCell padding="none" className={classes.cell}>
+            <span className={classes.label}>ID </span>
+            <span className={classes.info}>{values.id}</span>
+          </TableCell>
+          <TableCell padding="none" className={classes.cell}>
             <IconButton className={classes.addButton}>
               <AddCircleIcon />
             </IconButton>
@@ -117,12 +123,6 @@ const Node: React.FC<NodeShape> = ({
             <IconButton className={classes.deleteButton}>
               <DeleteIcon />
             </IconButton>
-          </TableCell>
-        </TableRow>
-        <TableRow hover>
-          <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
-          <TableCell padding="none" className={cx(classes.cell, classes.info)}>
-            {values.id}
           </TableCell>
         </TableRow>
         <TableRow hover>

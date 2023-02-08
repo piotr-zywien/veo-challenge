@@ -30,9 +30,13 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
     marginRight: spacing(25),
   },
   vertical: {
+    position: 'absolute',
     width: 0,
-    height: spacing(8),
+    height: '100%',
+    minHeight: '100%',
     marginLeft: spacing(25),
+    marginTop: spacing(-3.75),
+    zIndex: -1,
   },
   children: {
     display: 'flex',
@@ -41,6 +45,12 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
   },
   cell: {
     border: 'none',
+  },
+  flexCell: {
+    display: 'flex',
+  },
+  branchCell: {
+    height: spacing(8),
   },
 }));
 
@@ -98,6 +108,7 @@ const Tree: React.FC<{
             depth={depth}
             collapse={collapse}
           />
+          <div className={cx(classes.branch, classes.vertical)} />
         </TableCell>
       );
     }
@@ -105,7 +116,7 @@ const Tree: React.FC<{
     return (
       <TableCell
         padding="none"
-        className={classes.cell}
+        className={cx(classes.cell, classes.flexCell)}
       >
         <div className={cx(classes.branch, classes.vertical)} />
         <Node
@@ -147,7 +158,7 @@ const Tree: React.FC<{
         <TableRow>
           <TableCell
             padding="none"
-            className={classes.cell}
+            className={cx(classes.cell, classes.branchCell)}
           >
             <div className={cx(classes.branch, classes.vertical)} />
             <div className={cx(classes.branch, classes.horizontal)} />
