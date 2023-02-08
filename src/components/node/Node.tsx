@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 
 import { makeStyles } from 'tss-react/mui';
 import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
+import Collapse from '@mui/material/Collapse';
 
 import NodeShape from './NodeShape';
 
 
 const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
   root: {
-    width: spacing(28),
+    width: spacing(41),
     height: 'fit-content',
     borderWidth: 1,
     borderColor: palette.primary.light,
@@ -20,8 +22,6 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     borderCollapse: 'inherit',
     padding: spacing(0.25),
     boxShadow: shadows[5],
-    marginRight: spacing(1),
-    marginLeft: spacing(1),
   },
   row: {
     '&:last-child td, &:last-child th': {
@@ -29,14 +29,21 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     },
   },
   cell: {
-    fontSize: 8,
+    maxWidth: spacing(21),
+    width: spacing(21),
     whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: spacing(1),
   },
   label: {
     color: palette.primary.main,
   },
   info: {
     fontWeight: 'bold',
+  },
+  collapseTable: {
+    borderRadius: 'inherit',
   },
 }));
 
@@ -59,47 +66,53 @@ const Node: React.FC<NodeShape> = ({
       onClick={() => setIsExpanded(!isExpanded)}
       onDoubleClick={() => console.log('AAA', id)}
     >
+      <TableHead>
+        <TableRow className={classes.row}>
+          <TableCell padding="none" className={cx(classes.cell, classes.label)}>First Name</TableCell>
+          <TableCell padding="none" className={cx(classes.cell, classes.info)}>{firstName}</TableCell>
+        </TableRow>
+        <TableRow className={classes.row}>
+          <TableCell padding="none" className={cx(classes.cell, classes.label)}>Last Name</TableCell>
+          <TableCell padding="none" className={cx(classes.cell, classes.info)}>{lastName}</TableCell>
+        </TableRow>
+      </TableHead>
       <TableBody>
-        <TableRow className={classes.row}>
-          <TableCell className={cx(classes.cell, classes.label)}>First Name</TableCell>
-          <TableCell className={cx(classes.cell, classes.info)}>{firstName}</TableCell>
+        <TableRow>
+          <TableCell colSpan={2} padding="none">
+            <Collapse in={isExpanded}>
+              <Table>
+                <TableRow className={classes.row}>
+                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
+                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{id}</TableCell>
+                </TableRow>
+                <TableRow className={classes.row}>
+                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Title</TableCell>
+                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{title}</TableCell>
+                </TableRow>
+                {department && (
+                  <TableRow className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Department</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>{department}</TableCell>
+                  </TableRow>
+                )}
+                {phone && (
+                  <TableRow className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Phone</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>{phone}</TableCell>
+                  </TableRow>
+                )}
+                <TableRow className={classes.row}>
+                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Email</TableCell>
+                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{email}</TableCell>
+                </TableRow>
+                <TableRow className={classes.row}>
+                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Depth</TableCell>
+                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{depth}</TableCell>
+                </TableRow>
+              </Table>
+            </Collapse>
+          </TableCell>
         </TableRow>
-        <TableRow className={classes.row}>
-          <TableCell className={cx(classes.cell, classes.label)}>Last Name</TableCell>
-          <TableCell className={cx(classes.cell, classes.info)}>{lastName}</TableCell>
-        </TableRow>
-        {isExpanded && (
-          <>
-            <TableRow className={classes.row}>
-              <TableCell className={cx(classes.cell, classes.label)}>ID</TableCell>
-              <TableCell className={cx(classes.cell, classes.info)}>{id}</TableCell>
-            </TableRow>
-            <TableRow className={classes.row}>
-              <TableCell className={cx(classes.cell, classes.label)}>Title</TableCell>
-              <TableCell className={cx(classes.cell, classes.info)}>{title}</TableCell>
-            </TableRow>
-            {department && (
-              <TableRow className={classes.row}>
-                <TableCell className={cx(classes.cell, classes.label)}>Department</TableCell>
-                <TableCell className={cx(classes.cell, classes.info)}>{department}</TableCell>
-              </TableRow>
-            )}
-            {phone && (
-              <TableRow className={classes.row}>
-                <TableCell className={cx(classes.cell, classes.label)}>Phone</TableCell>
-                <TableCell className={cx(classes.cell, classes.info)}>{phone}</TableCell>
-              </TableRow>
-            )}
-            <TableRow className={classes.row}>
-              <TableCell className={cx(classes.cell, classes.label)}>Email</TableCell>
-              <TableCell className={cx(classes.cell, classes.info)}>{email}</TableCell>
-            </TableRow>
-            <TableRow className={classes.row}>
-              <TableCell className={cx(classes.cell, classes.label)}>Depth</TableCell>
-              <TableCell className={cx(classes.cell, classes.info)}>{depth}</TableCell>
-            </TableRow>
-          </>
-        )}
       </TableBody>
     </Table>
   );

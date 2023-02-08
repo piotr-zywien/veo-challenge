@@ -1,6 +1,10 @@
 import React from 'react';
 
 import { makeStyles } from 'tss-react/mui';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 import Node, { NodeShape } from '../node';
 
@@ -14,30 +18,15 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
     flexDirection: 'column',
     flexFlow: 'column',
   },
+  branchCell: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'red',
+  },
   children: {
     display: 'flex',
     justifyContent: 'flex-start',
-    width: '100%',
-    flexDirection: 'row',
-    flexFlow: 'row',
-    borderTopWidth: spacing(0.25),
-    borderTopStyle: 'solid',
-    borderTopColor: palette.secondary.main,
-  },
-  branchVerticalContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexFlow: 'column',
     width: 'fit-content',
-  },
-  branchVertical: {
-    display: 'flex',
-    borderLeftWidth: spacing(0.25),
-    borderLeftStyle: 'solid',
-    borderLeftColor: palette.secondary.main,
-    height: spacing(4),
-    width: 0,
-    marginLeft: spacing(14),
   },
 }));
 
@@ -45,12 +34,14 @@ const Tree: React.FC<{
   nodes: NodeShape[],
   tree: TreeShape,
   depth?: number,
+  index?: number,
 }> = ({
   nodes,
   tree,
   depth = 0,
+  index = 0,
 }) => {
-  const { classes } = useStyles();
+  const { cx, classes } = useStyles();
 
   const getNodeComponent = (
     id: number,
@@ -70,23 +61,24 @@ const Tree: React.FC<{
 
     if (depth === 0) {
       return (
-        <Node
-          id={id}
-          firstName={firstName}
-          lastName={lastName}
-          title={title}
-          department={department}
-          phone={phone}
-          email={email}
-          expanded={expanded}
-          depth={depth}
-        />
+        <TableCell padding="none">
+          <Node
+            id={id}
+            firstName={firstName}
+            lastName={lastName}
+            title={title}
+            department={department}
+            phone={phone}
+            email={email}
+            expanded={expanded}
+            depth={depth}
+          />
+        </TableCell>
       );
     }
 
     return (
-      <div className={classes.branchVerticalContainer}>
-        <div className={classes.branchVertical} />
+      <TableCell padding="none">
         <Node
           id={id}
           firstName={firstName}
@@ -98,7 +90,7 @@ const Tree: React.FC<{
           expanded={expanded}
           depth={depth}
         />
-      </div>
+      </TableCell>
     );
   };
 
@@ -113,25 +105,28 @@ const Tree: React.FC<{
   }
 
   return (
-    <div className={classes.root}>
-      {getNodeComponent(
-        id,
-        nodes,
-        depth,
-      )}
-      <div className={classes.branchVerticalContainer}>
-        <div className={classes.branchVertical} />
-        <div className={classes.children}>
-          {children.map(child => (
+    <Table>
+      <TableBody>
+        <TableRow>
+          <TableCell padding="none" colSpan={children.length}>
+            {getNodeComponent(
+              id,
+              nodes,
+              depth,
+            )}
+          </TableCell>
+        </TableRow>
+        <TableRow className={classes.children}>
+          {children.map((child, index) => (
             <Tree
               nodes={nodes}
               tree={child}
               depth={depth + 1}
             />
           ))}
-        </div>
-      </div>
-    </div>
+        </TableRow>
+      </TableBody>
+    </Table>
   );
 };
 
