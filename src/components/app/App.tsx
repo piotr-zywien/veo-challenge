@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useLayoutEffect } from 'react'
 
 import Requests from '../../requests';
 import Tree from '../tree';
@@ -16,7 +16,7 @@ const App = () => {
   const setTreeCallback = useCallback((value: TreeShape) => setTree(value), [lastId, nodes, tree]);
   const setLastIdCallback = useCallback((value: number) => setLastId(value), [lastId, nodes, tree]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     Promise.all([
       Requests.getIndex(),
       Requests.getNodes(),
@@ -26,9 +26,9 @@ const App = () => {
       nodes,
       tree,
     ]) => {
-      setLastId(index);
+      setLastIdCallback(index);
       setNodesCallback([...nodes]);
-      setTreeCallback({...tree});
+      setTreeCallback(structuredClone({...tree}));
     });
   }, []);
 
@@ -38,7 +38,7 @@ const App = () => {
   //   tree,
   // });
 
-  // if (lastId === null || nodes === null || tree === null) return null;
+  if (lastId === null || nodes === null || tree === null) return null;
 console.log(lastId, nodes, tree);
   return (
     <Tree

@@ -67,10 +67,10 @@ export const addChild = (id: number, node: NodeShape, tree: TreeShape) => {
   const { children } = tree;
 
   const $children: TreeShape[] = [];
+  if (tree.id === id) {
+    $children.push(newNode(node));
+  }
   if (children) {
-    if (tree.id === id) {
-      $children.push(newNode(node));
-    }
     children.forEach((child: TreeShape) => {
       $children.push(addChild(id, node, child));
     });

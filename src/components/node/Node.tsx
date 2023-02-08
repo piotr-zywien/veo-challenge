@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useFormik, FormikProps } from 'formik';
 
 import { makeStyles } from 'tss-react/mui';
@@ -124,10 +124,12 @@ const Node: React.FC<NodeShape> = ({
     expanded,
     depth,
   };
+
   const formik: FormikProps<NodeShape> = useFormik<NodeShape>({
     initialValues,
     validationSchema: schema,
     onSubmit: values => {},
+    enableReinitialize: true,
   });
 
   const { setFieldValue, values, errors } = formik;

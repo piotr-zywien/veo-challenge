@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { makeStyles } from 'tss-react/mui';
 import Table from '@mui/material/Table';
@@ -34,8 +34,6 @@ const Tree: React.FC<{
 }) => {
   const { id, children } = treeBr;
   const [show, setShow] = useState<boolean>(false);
-
-  useEffect(() => {}, [tree, treeBr])
 
   if (isLeaf(treeBr)) return (
     <TreeNode

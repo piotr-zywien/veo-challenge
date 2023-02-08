@@ -9,7 +9,7 @@
       "department": "Management",
       "phone": "12345678",
       "email": "ceo@company.com",
-      "expanded": false
+      "expanded": true
     }
   ],
   "tree": {

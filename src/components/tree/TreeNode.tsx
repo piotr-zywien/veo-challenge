@@ -66,10 +66,10 @@ const TreeNode: React.FC<{
   );
   const onDelete = () => {
     setTree(
-      structuredClone({...deleteBranch(
+      {...deleteBranch(
         id,
         tree,
-      )}),
+      )},
     );
     setNodes([
       ...deleteNode(
@@ -87,11 +87,11 @@ const TreeNode: React.FC<{
       ...nodes,
     ]);
 
-    setTree(structuredClone({...addChild(
+    setTree({...addChild(
       id,
       newNode,
       tree,
-    )}));
+    )});
 
   };
 
@@ -125,7 +125,7 @@ const TreeNode: React.FC<{
   );
 
   if (depth === 0) {
-    return wrapInCell ?(
+    return wrapInCell ? (
       <TableCell
         padding="none"
         className={classes.cell}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useLayoutEffect, useRef, useCallback } from 'react';
 
 import { makeStyles } from 'tss-react/mui';
 import TableRow from '@mui/material/TableRow';
@@ -11,7 +11,8 @@ import TreeShape from './TreeShape';
 
 const useStyles = makeStyles()(({ spacing, palette }) => ({
   children: {
-    display: 'block',
+    display: 'flex',
+    justifyContent: 'center',
   },
   line: {
     height: 0,
@@ -78,17 +79,17 @@ const TreeChildren: React.FC<{
     return { x, p };
   }, [tree, treeBr]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (fromRef) {
       setFrom(getPoints(fromRef));
     }
   }, [tree, treeBr, fromRef])
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (toRef) {
       setTo(getPoints(toRef));
     }
   }, [tree, treeBr, toRef]);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (from && to) {
       setMargin(from.x - from.p)
       setWidth(to.x - from.x);
@@ -102,6 +103,8 @@ const TreeChildren: React.FC<{
     margin,
     width,
   ]);
+
+  if (!children || children.length < 1) return null;
 
   return (
     <>
@@ -122,7 +125,7 @@ const TreeChildren: React.FC<{
           />
         </TableCell>
       </TableRow>
-      <TableRow className={cx(classes.children)}>
+      <TableRow className={classes.children}>
         {children.map((child, index) => {
           let ref = undefined;
           if (index === 0) {
