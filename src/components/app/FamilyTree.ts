@@ -75,10 +75,10 @@ export default {
     {
       id: 8,
       firstName: 'Joanna',
-      lastName: 'Żywień',
+      lastName: 'Teterwak',
       title: 'Nepo Baby',
       department: 'Zielona Góra Family',
-      email: 'joanna.zywien@zielona-gora.family',
+      email: 'joanna.teterwak@zielona-gora.family',
       expanded: true,
     },
     {
@@ -119,6 +119,24 @@ export default {
     },
     {
       id: 13,
+      firstName: 'Tomasz',
+      lastName: 'Teterwak',
+      title: 'Nepo Baby',
+      department: 'Zielona Góra Family',
+      email: 'tomasz.zywien@zielona-gora.family',
+      expanded: true,
+    },
+    {
+      id: 14,
+      firstName: 'Marta',
+      lastName: 'Teterwak',
+      title: 'Nepo Baby',
+      department: 'Zielona Góra Family',
+      email: 'marta.zywien@zielona-gora.family',
+      expanded: true,
+    },
+    {
+      id: 15,
       firstName: 'Julia',
       lastName: 'Strehl',
       title: 'Nepo Baby',
@@ -127,7 +145,7 @@ export default {
       expanded: true,
     },
     {
-      id: 14,
+      id: 16,
       firstName: 'Zuzanna',
       lastName: 'Strehl',
       title: 'Nepo Baby',
@@ -136,7 +154,7 @@ export default {
       expanded: true,
     },
     {
-      id: 15,
+      id: 17,
       firstName: 'Marcelina',
       lastName: 'Strehl',
       title: 'Nepo Baby',
@@ -145,7 +163,7 @@ export default {
       expanded: true,
     },
     {
-      id: 15,
+      id: 18,
       firstName: 'Jan',
       lastName: 'Strehl',
       title: 'Nepo Baby',
@@ -166,13 +184,23 @@ export default {
               {
                 id: 7,
                 children: [
-
+                  {
+                    id: 11,
+                  },
+                  {
+                    id: 12,
+                  },
                 ],
               },
               {
                 id: 8,
                 children: [
-
+                  {
+                    id: 13,
+                  },
+                  {
+                    id: 14,
+                  },
                 ],
               },
             ],
@@ -183,13 +211,23 @@ export default {
               {
                 id: 7,
                 children: [
-
+                  {
+                    id: 11,
+                  },
+                  {
+                    id: 12,
+                  },
                 ],
               },
               {
                 id: 8,
                 children: [
-
+                  {
+                    id: 13,
+                  },
+                  {
+                    id: 14,
+                  },
                 ],
               },
             ],
@@ -205,13 +243,29 @@ export default {
               {
                 id: 9,
                 children: [
-
+                  {
+                    id: 11,
+                  },
+                  {
+                    id: 12,
+                  },
                 ],
               },
               {
                 id: 10,
                 children: [
-
+                  {
+                    id: 15,
+                  },
+                  {
+                    id: 16,
+                  },
+                  {
+                    id: 17,
+                  },
+                  {
+                    id: 18,
+                  },
                 ],
               },
             ],
@@ -222,13 +276,29 @@ export default {
               {
                 id: 9,
                 children: [
-
+                  {
+                    id: 11,
+                  },
+                  {
+                    id: 12,
+                  },
                 ],
               },
               {
                 id: 10,
                 children: [
-
+                  {
+                    id: 15,
+                  },
+                  {
+                    id: 16,
+                  },
+                  {
+                    id: 17,
+                  },
+                  {
+                    id: 18,
+                  },
                 ],
               },
             ],

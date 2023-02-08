@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useFormik, FormikProps } from 'formik';
 
 import { makeStyles } from 'tss-react/mui';
 import Table from '@mui/material/Table';
@@ -8,12 +9,15 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Collapse from '@mui/material/Collapse';
 
+import Edit from '../edit';
+
 import NodeShape from './NodeShape';
+import schema from './schema';
 
 
 const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
   root: {
-    width: spacing(41),
+    width: spacing(42),
     height: 'fit-content',
     borderWidth: 1,
     borderColor: palette.primary.light,
@@ -22,6 +26,7 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     borderCollapse: 'inherit',
     padding: spacing(0.25),
     boxShadow: shadows[5],
+    margin: spacing(4),
   },
   row: {
     '&:last-child td, &:last-child th': {
@@ -60,6 +65,25 @@ const Node: React.FC<NodeShape> = ({
 }: NodeShape ) => {
   const [isExpanded, setIsExpanded] = useState(expanded)
   const { cx, classes, theme } = useStyles();
+  const initialValues: NodeShape = {
+    id,
+    firstName,
+    lastName,
+    title,
+    department,
+    phone,
+    email,
+    expanded,
+    depth,
+  };
+  const formik: FormikProps<NodeShape> = useFormik<NodeShape>({
+    initialValues,
+    validationSchema: schema,
+    onSubmit: values => {},
+  });
+
+  const { setFieldValue, values } = formik;
+
   return (
     <Table
       className={classes.root}
@@ -67,13 +91,29 @@ const Node: React.FC<NodeShape> = ({
       onDoubleClick={() => console.log('AAA', id)}
     >
       <TableHead>
-        <TableRow className={classes.row}>
+        <TableRow hover className={classes.row}>
           <TableCell padding="none" className={cx(classes.cell, classes.label)}>First Name</TableCell>
-          <TableCell padding="none" className={cx(classes.cell, classes.info)}>{firstName}</TableCell>
+          <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+            <Edit
+              name="firstName"
+              value={values.firstName}
+              error={Boolean(formik.touched.firstName && formik.errors.firstName)}
+              helper={formik.errors.firstName}
+              change={setFieldValue}
+            />
+          </TableCell>
         </TableRow>
-        <TableRow className={classes.row}>
+        <TableRow hover className={classes.row}>
           <TableCell padding="none" className={cx(classes.cell, classes.label)}>Last Name</TableCell>
-          <TableCell padding="none" className={cx(classes.cell, classes.info)}>{lastName}</TableCell>
+          <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+            <Edit
+              name="lastName"
+              value={values.lastName}
+              error={Boolean(formik.touched.lastName && formik.errors.lastName)}
+              helper={formik.errors.lastName}
+              change={setFieldValue}
+            />
+          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -81,34 +121,76 @@ const Node: React.FC<NodeShape> = ({
           <TableCell colSpan={2} padding="none">
             <Collapse in={isExpanded}>
               <Table>
-                <TableRow className={classes.row}>
-                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
-                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{id}</TableCell>
-                </TableRow>
-                <TableRow className={classes.row}>
-                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Title</TableCell>
-                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{title}</TableCell>
-                </TableRow>
-                {department && (
-                  <TableRow className={classes.row}>
-                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Department</TableCell>
-                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>{department}</TableCell>
+                <TableBody>
+                  <TableRow hover className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                      <Edit
+                        name="id"
+                        value={values.id}
+                        error={Boolean(formik.touched.id && formik.errors.id)}
+                        helper={formik.errors.id}
+                        change={setFieldValue}
+                      />
+                    </TableCell>
                   </TableRow>
-                )}
-                {phone && (
-                  <TableRow className={classes.row}>
-                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Phone</TableCell>
-                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>{phone}</TableCell>
+                  <TableRow hover className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Title</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                      <Edit
+                        name="title"
+                        value={values.title}
+                        error={Boolean(formik.touched.title && formik.errors.title)}
+                        helper={formik.errors.title}
+                        change={setFieldValue}
+                      />
+                    </TableCell>
                   </TableRow>
-                )}
-                <TableRow className={classes.row}>
-                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Email</TableCell>
-                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{email}</TableCell>
-                </TableRow>
-                <TableRow className={classes.row}>
-                  <TableCell padding="none" className={cx(classes.cell, classes.label)}>Depth</TableCell>
-                  <TableCell padding="none" className={cx(classes.cell, classes.info)}>{depth}</TableCell>
-                </TableRow>
+                  {department && (
+                    <TableRow hover className={classes.row}>
+                      <TableCell padding="none" className={cx(classes.cell, classes.label)}>Department</TableCell>
+                      <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                        <Edit
+                          name="department"
+                          value={values.department}
+                          error={Boolean(formik.touched.department && formik.errors.department)}
+                          helper={formik.errors.department}
+                          change={setFieldValue}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {phone && (
+                    <TableRow hover className={classes.row}>
+                      <TableCell padding="none" className={cx(classes.cell, classes.label)}>Phone</TableCell>
+                      <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                        <Edit
+                          name="phone"
+                          value={values.phone}
+                          error={Boolean(formik.touched.phone && formik.errors.phone)}
+                          helper={formik.errors.phone}
+                          change={setFieldValue}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  <TableRow hover className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Email</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                      <Edit
+                        name="email"
+                        value={values.email}
+                        error={Boolean(formik.touched.email && formik.errors.email)}
+                        helper={formik.errors.email}
+                        change={setFieldValue}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover className={classes.row}>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Depth</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>{depth}</TableCell>
+                  </TableRow>
+                </TableBody>
               </Table>
             </Collapse>
           </TableCell>

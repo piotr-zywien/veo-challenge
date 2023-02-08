@@ -28,6 +28,9 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
     justifyContent: 'flex-start',
     width: 'fit-content',
   },
+  cell: {
+    border: 'none',
+  },
 }));
 
 const Tree: React.FC<{
@@ -61,7 +64,10 @@ const Tree: React.FC<{
 
     if (depth === 0) {
       return (
-        <TableCell padding="none">
+        <TableCell
+          padding="none"
+          className={classes.cell}
+        >
           <Node
             id={id}
             firstName={firstName}
@@ -78,7 +84,10 @@ const Tree: React.FC<{
     }
 
     return (
-      <TableCell padding="none">
+      <TableCell
+        padding="none"
+        className={classes.cell}
+      >
         <Node
           id={id}
           firstName={firstName}
@@ -108,13 +117,11 @@ const Tree: React.FC<{
     <Table>
       <TableBody>
         <TableRow>
-          <TableCell padding="none" colSpan={children.length}>
-            {getNodeComponent(
-              id,
-              nodes,
-              depth,
-            )}
-          </TableCell>
+          {getNodeComponent(
+            id,
+            nodes,
+            depth,
+          )}
         </TableRow>
         <TableRow className={classes.children}>
           {children.map((child, index) => (
