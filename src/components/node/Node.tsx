@@ -8,6 +8,10 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import Edit from '../edit';
 
@@ -23,12 +27,23 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     borderColor: palette.primary.light,
     borderStyle: 'solid',
     borderRadius: spacing(1),
-    borderCollapse: 'inherit',
+    borderCollapse: 'initial',
     padding: spacing(0.25),
     boxShadow: shadows[5],
     margin: spacing(4),
+    marginTop: spacing(1),
+    marginBottom: spacing(1),
   },
-  row: {
+  addButton: {
+    color: palette.primary.light,
+  },
+  saveButton: {
+    color: 'green',
+  },
+  deleteButton: {
+    color: 'red',
+  },
+  lastRow: {
     '&:last-child td, &:last-child th': {
       border: 'none',
     },
@@ -47,9 +62,6 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
   info: {
     fontWeight: 'bold',
   },
-  collapseTable: {
-    borderRadius: 'inherit',
-  },
 }));
 
 const Node: React.FC<NodeShape> = ({
@@ -62,8 +74,8 @@ const Node: React.FC<NodeShape> = ({
   email,
   expanded,
   depth,
+  collapse,
 }: NodeShape ) => {
-  const [isExpanded, setIsExpanded] = useState(expanded)
   const { cx, classes, theme } = useStyles();
   const initialValues: NodeShape = {
     id,
@@ -82,35 +94,57 @@ const Node: React.FC<NodeShape> = ({
     onSubmit: values => {},
   });
 
-  const { setFieldValue, values } = formik;
+  const { setFieldValue, values, errors } = formik;
 
   return (
     <Table
       className={classes.root}
-      onClick={() => setIsExpanded(!isExpanded)}
-      onDoubleClick={() => console.log('AAA', id)}
+      // onClick={() => setIsExpanded(!isExpanded)}
+      onDoubleClick={(event) => {
+        event.stopPropagation();
+        collapse();
+      }}
     >
       <TableHead>
-        <TableRow hover className={classes.row}>
+        <TableRow>
+          <TableCell colSpan={2}>
+            <IconButton className={classes.addButton}>
+              <AddCircleIcon />
+            </IconButton>
+            <IconButton className={classes.saveButton}>
+              <SaveIcon />
+            </IconButton>
+            <IconButton className={classes.deleteButton}>
+              <DeleteIcon />
+            </IconButton>
+          </TableCell>
+        </TableRow>
+        <TableRow hover>
+          <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
+          <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+            {values.id}
+          </TableCell>
+        </TableRow>
+        <TableRow hover>
           <TableCell padding="none" className={cx(classes.cell, classes.label)}>First Name</TableCell>
           <TableCell padding="none" className={cx(classes.cell, classes.info)}>
             <Edit
               name="firstName"
               value={values.firstName}
-              error={Boolean(formik.touched.firstName && formik.errors.firstName)}
-              helper={formik.errors.firstName}
+              error={Boolean(errors.firstName)}
+              helper={errors.firstName}
               change={setFieldValue}
             />
           </TableCell>
         </TableRow>
-        <TableRow hover className={classes.row}>
+        <TableRow hover>
           <TableCell padding="none" className={cx(classes.cell, classes.label)}>Last Name</TableCell>
           <TableCell padding="none" className={cx(classes.cell, classes.info)}>
             <Edit
               name="lastName"
               value={values.lastName}
-              error={Boolean(formik.touched.lastName && formik.errors.lastName)}
-              helper={formik.errors.lastName}
+              error={Boolean(errors.lastName)}
+              helper={errors.lastName}
               change={setFieldValue}
             />
           </TableCell>
@@ -119,74 +153,58 @@ const Node: React.FC<NodeShape> = ({
       <TableBody>
         <TableRow>
           <TableCell colSpan={2} padding="none">
-            <Collapse in={isExpanded}>
+            <Collapse in={expanded}>
               <Table>
                 <TableBody>
-                  <TableRow hover className={classes.row}>
-                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>ID</TableCell>
-                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
-                      <Edit
-                        name="id"
-                        value={values.id}
-                        error={Boolean(formik.touched.id && formik.errors.id)}
-                        helper={formik.errors.id}
-                        change={setFieldValue}
-                      />
-                    </TableCell>
-                  </TableRow>
-                  <TableRow hover className={classes.row}>
+                  <TableRow hover>
                     <TableCell padding="none" className={cx(classes.cell, classes.label)}>Title</TableCell>
                     <TableCell padding="none" className={cx(classes.cell, classes.info)}>
                       <Edit
                         name="title"
                         value={values.title}
-                        error={Boolean(formik.touched.title && formik.errors.title)}
-                        helper={formik.errors.title}
+                        error={Boolean(errors.title)}
+                        helper={errors.title}
                         change={setFieldValue}
                       />
                     </TableCell>
                   </TableRow>
-                  {department && (
-                    <TableRow hover className={classes.row}>
-                      <TableCell padding="none" className={cx(classes.cell, classes.label)}>Department</TableCell>
-                      <TableCell padding="none" className={cx(classes.cell, classes.info)}>
-                        <Edit
-                          name="department"
-                          value={values.department}
-                          error={Boolean(formik.touched.department && formik.errors.department)}
-                          helper={formik.errors.department}
-                          change={setFieldValue}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  {phone && (
-                    <TableRow hover className={classes.row}>
-                      <TableCell padding="none" className={cx(classes.cell, classes.label)}>Phone</TableCell>
-                      <TableCell padding="none" className={cx(classes.cell, classes.info)}>
-                        <Edit
-                          name="phone"
-                          value={values.phone}
-                          error={Boolean(formik.touched.phone && formik.errors.phone)}
-                          helper={formik.errors.phone}
-                          change={setFieldValue}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  )}
-                  <TableRow hover className={classes.row}>
+                  <TableRow hover>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Department</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                      <Edit
+                        name="department"
+                        value={values.department}
+                        error={Boolean(errors.department)}
+                        helper={errors.department}
+                        change={setFieldValue}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover>
+                    <TableCell padding="none" className={cx(classes.cell, classes.label)}>Phone</TableCell>
+                    <TableCell padding="none" className={cx(classes.cell, classes.info)}>
+                      <Edit
+                        name="phone"
+                        value={values.phone}
+                        error={Boolean(errors.phone)}
+                        helper={errors.phone}
+                        change={setFieldValue}
+                      />
+                    </TableCell>
+                  </TableRow>
+                  <TableRow hover>
                     <TableCell padding="none" className={cx(classes.cell, classes.label)}>Email</TableCell>
                     <TableCell padding="none" className={cx(classes.cell, classes.info)}>
                       <Edit
                         name="email"
                         value={values.email}
-                        error={Boolean(formik.touched.email && formik.errors.email)}
-                        helper={formik.errors.email}
+                        error={Boolean(errors.email)}
+                        helper={errors.email}
                         change={setFieldValue}
                       />
                     </TableCell>
                   </TableRow>
-                  <TableRow hover className={classes.row}>
+                  <TableRow hover className={classes.lastRow}>
                     <TableCell padding="none" className={cx(classes.cell, classes.label)}>Depth</TableCell>
                     <TableCell padding="none" className={cx(classes.cell, classes.info)}>{depth}</TableCell>
                   </TableRow>

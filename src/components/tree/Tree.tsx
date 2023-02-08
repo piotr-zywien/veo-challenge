@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import Node, { NodeShape } from '../node';
 
 import TreeShape from './TreeShape';
-import { isLeaf, getNode } from './utils';
+import { isLeaf, getNode, collapseNodes } from './utils';
 
 
 const useStyles = makeStyles()(({ spacing, palette }) => ({
@@ -18,10 +18,21 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
     flexDirection: 'column',
     flexFlow: 'column',
   },
-  branchCell: {
-    borderWidth: 1,
+  branch: {
+    borderWidth: spacing(0.25),
     borderStyle: 'solid',
-    borderColor: 'red',
+    borderColor: palette.primary.main,
+  },
+  horizontal: {
+    height: 0,
+    width: 'auto',
+    marginLeft: spacing(25),
+    marginRight: spacing(25),
+  },
+  vertical: {
+    width: 0,
+    height: spacing(8),
+    marginLeft: spacing(25),
   },
   children: {
     display: 'flex',
@@ -36,13 +47,13 @@ const useStyles = makeStyles()(({ spacing, palette }) => ({
 const Tree: React.FC<{
   nodes: NodeShape[],
   tree: TreeShape,
+  setNodes: (value: NodeShape[]) => void,
   depth?: number,
-  index?: number,
 }> = ({
   nodes,
   tree,
+  setNodes,
   depth = 0,
-  index = 0,
 }) => {
   const { cx, classes } = useStyles();
 
@@ -52,6 +63,13 @@ const Tree: React.FC<{
     depth: number,
   ) => {
     const node = getNode(id, nodes);
+    const collapse = () => setNodes(
+      [...collapseNodes(
+        id,
+        nodes,
+        tree,
+      )],
+    );
     const {
       firstName,
       lastName,
@@ -78,6 +96,7 @@ const Tree: React.FC<{
             email={email}
             expanded={expanded}
             depth={depth}
+            collapse={collapse}
           />
         </TableCell>
       );
@@ -88,6 +107,7 @@ const Tree: React.FC<{
         padding="none"
         className={classes.cell}
       >
+        <div className={cx(classes.branch, classes.vertical)} />
         <Node
           id={id}
           firstName={firstName}
@@ -98,6 +118,7 @@ const Tree: React.FC<{
           email={email}
           expanded={expanded}
           depth={depth}
+          collapse={collapse}
         />
       </TableCell>
     );
@@ -123,11 +144,21 @@ const Tree: React.FC<{
             depth,
           )}
         </TableRow>
+        <TableRow>
+          <TableCell
+            padding="none"
+            className={classes.cell}
+          >
+            <div className={cx(classes.branch, classes.vertical)} />
+            <div className={cx(classes.branch, classes.horizontal)} />
+          </TableCell>
+        </TableRow>
         <TableRow className={classes.children}>
-          {children.map((child, index) => (
+          {children.map((child) => (
             <Tree
               nodes={nodes}
               tree={child}
+              setNodes={setNodes}
               depth={depth + 1}
             />
           ))}

@@ -1,4 +1,5 @@
- import * as Yup from 'yup';
+import * as Yup from 'yup';
+import "yup-phone";
 
 
 const schema = Yup.object({
@@ -19,7 +20,7 @@ const schema = Yup.object({
     .optional(),
   phone: Yup
     .string()
-    .optional(),
+    .phone('DK', true, 'Invalid phone number!'),
   email: Yup
     .string()
     .email('Invalid email address!')

@@ -1,24 +1,20 @@
-import React from 'react'
-
-import Typography from '@mui/material/Typography';
+import React, { useState } from 'react'
 
 import Tree from '../tree';
+import { NodeShape } from '../node';
 import FamilyTree from './FamilyTree';
 
 
-const App = () => (
-  <>
-    <Typography
-      variant="h5"
-      gutterBottom
-    >
-      Veo's Frontend Coding Challenge
-    </Typography>
+const App = () => {
+  const [nodes, setNodes] = useState<NodeShape[]>(FamilyTree.nodes);
+
+  return (
     <Tree
-      nodes={FamilyTree.nodes}
+      nodes={nodes}
       tree={FamilyTree.tree}
+      setNodes={setNodes}
     />
-  </>
-);
+  );
+};
 
 export default App;

@@ -8,6 +8,7 @@ interface NodeShape {
   email: string,
   depth?: number,
   expanded: boolean,
+  collapse?: () => void;
 }
 
 export default NodeShape;
