@@ -6,9 +6,8 @@ interface NodeShape {
   department?: string,
   phone?: string,
   email: string,
-  depth: number,
+  depth?: number,
   expanded: boolean,
-  children?: NodeShape[],
 }
 
 export default NodeShape;
