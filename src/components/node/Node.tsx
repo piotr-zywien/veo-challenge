@@ -159,7 +159,10 @@ const Node: React.FC<NodeShape> = ({
             <TableCell padding="none" className={classes.cell}>
               <IconButton
                 className={classes.addButton}
-                onClick={onAdd}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onAdd();
+                }}
               >
                 <AddCircleIcon />
               </IconButton>
@@ -168,7 +171,10 @@ const Node: React.FC<NodeShape> = ({
               </IconButton>
               <IconButton
                 className={classes.deleteButton}
-                onClick={onDelete}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onDelete();
+                }}
               >
                 <DeleteIcon />
               </IconButton>

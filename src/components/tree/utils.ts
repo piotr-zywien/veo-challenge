@@ -43,7 +43,7 @@ export const deleteBranch = (id: number, tree: TreeShape) => {
   const $children: TreeShape[] = [];
   if (children) {
     children.forEach((child: TreeShape) => {
-      if (child.id !== id) {
+      if (tree.id !== id) {
         $children.push(deleteBranch(id, child));
       }
     });
