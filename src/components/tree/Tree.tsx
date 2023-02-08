@@ -4,53 +4,19 @@ import { makeStyles } from 'tss-react/mui';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 
-import Node, { NodeShape } from '../node';
-
+import { NodeShape } from '../node';
+import TreeNode from './TreeNode';
+import TreeChildren from './TreeChildren';
 import TreeShape from './TreeShape';
-import { isLeaf, getNode, collapseNodes } from './utils';
+import { isLeaf } from './utils';
 
 
-const useStyles = makeStyles()(({ spacing, palette }) => ({
+const useStyles = makeStyles()(({ spacing }) => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     flexFlow: 'column',
-  },
-  branch: {
-    borderWidth: spacing(0.25),
-    borderStyle: 'solid',
-    borderColor: palette.primary.main,
-  },
-  horizontal: {
-    height: 0,
-    width: 'auto',
-    marginLeft: spacing(25),
-    marginRight: spacing(25),
-  },
-  vertical: {
-    position: 'absolute',
-    width: 0,
-    height: '100%',
-    minHeight: '100%',
-    marginLeft: spacing(25),
-    marginTop: spacing(-3.75),
-    zIndex: -1,
-  },
-  children: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    width: 'fit-content',
-  },
-  cell: {
-    border: 'none',
-  },
-  flexCell: {
-    display: 'flex',
-  },
-  branchCell: {
-    height: spacing(8),
   },
 }));
 
@@ -66,114 +32,39 @@ const Tree: React.FC<{
   depth = 0,
 }) => {
   const { cx, classes } = useStyles();
-
-  const getNodeComponent = (
-    id: number,
-    nodes: NodeShape[],
-    depth: number,
-  ) => {
-    const node = getNode(id, nodes);
-    const collapse = () => setNodes(
-      [...collapseNodes(
-        id,
-        nodes,
-        tree,
-      )],
-    );
-    const {
-      firstName,
-      lastName,
-      title,
-      department,
-      phone,
-      email,
-      expanded,
-    } = node;
-
-    if (depth === 0) {
-      return (
-        <TableCell
-          padding="none"
-          className={classes.cell}
-        >
-          <Node
-            id={id}
-            firstName={firstName}
-            lastName={lastName}
-            title={title}
-            department={department}
-            phone={phone}
-            email={email}
-            expanded={expanded}
-            depth={depth}
-            collapse={collapse}
-          />
-          <div className={cx(classes.branch, classes.vertical)} />
-        </TableCell>
-      );
-    }
-
-    return (
-      <TableCell
-        padding="none"
-        className={cx(classes.cell, classes.flexCell)}
-      >
-        <div className={cx(classes.branch, classes.vertical)} />
-        <Node
-          id={id}
-          firstName={firstName}
-          lastName={lastName}
-          title={title}
-          department={department}
-          phone={phone}
-          email={email}
-          expanded={expanded}
-          depth={depth}
-          collapse={collapse}
-        />
-      </TableCell>
-    );
-  };
-
   const { id, children } = tree;
 
-  if (isLeaf(tree)) {
-    return getNodeComponent(
-      id,
-      nodes,
-      depth,
-    );
-  }
+  if (isLeaf(tree)) return (
+    <TreeNode
+      id={id}
+      nodes={nodes}
+      setNodes={setNodes}
+      tree={tree}
+      depth={depth}
+      isLeaf
+    />
+  );
 
   return (
     <Table>
       <TableBody>
         <TableRow>
-          {getNodeComponent(
-            id,
-            nodes,
-            depth,
-          )}
+          <TreeNode
+            id={id}
+            nodes={nodes}
+            setNodes={setNodes}
+            tree={tree}
+            depth={depth}
+            wrapInCell
+          />
         </TableRow>
-        <TableRow>
-          <TableCell
-            padding="none"
-            className={cx(classes.cell, classes.branchCell)}
-          >
-            <div className={cx(classes.branch, classes.vertical)} />
-            <div className={cx(classes.branch, classes.horizontal)} />
-          </TableCell>
-        </TableRow>
-        <TableRow className={classes.children}>
-          {children.map((child) => (
-            <Tree
-              nodes={nodes}
-              tree={child}
-              setNodes={setNodes}
-              depth={depth + 1}
-            />
-          ))}
-        </TableRow>
+        <TreeChildren
+          children={children}
+          nodes={nodes}
+          tree={tree}
+          setNodes={setNodes}
+          depth={depth}
+        />
       </TableBody>
     </Table>
   );

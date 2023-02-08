@@ -4,7 +4,7 @@ import "yup-phone";
 
 const schema = Yup.object({
   id: Yup
-    .number()
+    .string()
     .required('ID is required!'),
   firstName: Yup
     .string()

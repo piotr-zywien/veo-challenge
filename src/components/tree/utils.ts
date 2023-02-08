@@ -8,7 +8,7 @@ export const isLeaf = (node: TreeShape) => {
   return !Array.isArray(children) || children.length === 0;
 };
 
-export const getNode = (id: number, nodes: NodeShape[]) => nodes.find(node => node.id === id);
+export const getNode = (id: number, nodes: NodeShape[]) => nodes.find(node => node.id === id) || null;
 
 export const getNodeId = (id: number, nodes: NodeShape[]) => nodes.findIndex(node => node.id === id);
 
@@ -24,6 +24,12 @@ export const searchTree = (id: number, tree: TreeShape) => {
   }
   return null;
 };
+
+export const deleteNode = (id: number, nodes: NodeShape[]) => {
+  const index = nodes.findIndex((child) => child.id === id);
+  nodes.splice(index, 1);
+  return nodes;
+}
 
 export const getIds = (tree: TreeShape, ids: number[]) => {
   const { id, children } = tree;

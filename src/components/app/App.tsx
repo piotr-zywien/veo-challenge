@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 import Tree from '../tree';
 import { NodeShape } from '../node';
+import { TreeShape } from '../tree';
 import FamilyTree from './FamilyTree';
 
 
