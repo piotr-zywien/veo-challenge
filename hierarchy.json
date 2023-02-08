@@ -1,5 +1,18 @@
 {
   "index": 0,
-  "nodes": [],
-  "tree": {}
+  "nodes": [
+    {
+      "id": 0,
+      "firstName": "Mister",
+      "lastName": "Important",
+      "title": "CEO",
+      "department": "Management",
+      "phone": "12345678",
+      "email": "ceo@company.com",
+      "expanded": false
+    }
+  ],
+  "tree": {
+    "id": 0
+  }
 }
