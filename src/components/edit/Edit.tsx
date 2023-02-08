@@ -17,12 +17,12 @@ const Edit: React.FC<EditShape> = ({
   value,
   error,
   helper,
-  change,
+  onChange,
 }) => {
   const { classes } = useStyles();
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const $onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = event;
-    change(
+    onChange(
       name,
       value,
       true,
@@ -40,7 +40,7 @@ const Edit: React.FC<EditShape> = ({
       value={value}
       helperText={helper}
       error={error}
-      onChange={onChange}
+      onChange={$onChange}
       onClick={onClick}
     />
   );

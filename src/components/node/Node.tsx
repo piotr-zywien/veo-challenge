@@ -47,6 +47,9 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     marginLeft: 'auto',
     marginRight: 'auto',
     backgroundColor: palette.common.white,
+    '&:hover': {
+      cursor: 'pointer',
+    },
   },
   addButton: {
     color: palette.primary.light,
@@ -106,6 +109,7 @@ const Node: React.FC<NodeShape> = ({
   onToggleSingle,
   onCollapse,
   onDelete,
+  onAdd,
   isLeaf,
 }: NodeShape ) => {
   const { cx, classes, theme } = useStyles();
@@ -130,9 +134,11 @@ const Node: React.FC<NodeShape> = ({
 
   return (
     <div className={classes.root}>
-      <div className={classes.branch} >
-        <div className={cx(classes.dot, classes.topDot)} />
-      </div>
+      {depth > 0 && (
+        <div className={classes.branch} >
+          <div className={cx(classes.dot, classes.topDot)} />
+        </div>
+      )}
       <Table
         className={classes.table}
         onClick={(event) => {
@@ -151,7 +157,10 @@ const Node: React.FC<NodeShape> = ({
               <span className={classes.info}>{values.id}</span>
             </TableCell>
             <TableCell padding="none" className={classes.cell}>
-              <IconButton className={classes.addButton}>
+              <IconButton
+                className={classes.addButton}
+                onClick={onAdd}
+              >
                 <AddCircleIcon />
               </IconButton>
               <IconButton className={classes.saveButton}>
@@ -173,7 +182,7 @@ const Node: React.FC<NodeShape> = ({
                 value={values.firstName}
                 error={Boolean(errors.firstName)}
                 helper={errors.firstName}
-                change={setFieldValue}
+                onChange={setFieldValue}
               />
             </TableCell>
           </TableRow>
@@ -185,7 +194,7 @@ const Node: React.FC<NodeShape> = ({
                 value={values.lastName}
                 error={Boolean(errors.lastName)}
                 helper={errors.lastName}
-                change={setFieldValue}
+                onChange={setFieldValue}
               />
             </TableCell>
           </TableRow>
@@ -204,7 +213,7 @@ const Node: React.FC<NodeShape> = ({
                           value={values.title}
                           error={Boolean(errors.title)}
                           helper={errors.title}
-                          change={setFieldValue}
+                          onChange={setFieldValue}
                         />
                       </TableCell>
                     </TableRow>
@@ -216,7 +225,7 @@ const Node: React.FC<NodeShape> = ({
                           value={values.department}
                           error={Boolean(errors.department)}
                           helper={errors.department}
-                          change={setFieldValue}
+                          onChange={setFieldValue}
                         />
                       </TableCell>
                     </TableRow>
@@ -228,7 +237,7 @@ const Node: React.FC<NodeShape> = ({
                           value={values.phone}
                           error={Boolean(errors.phone)}
                           helper={errors.phone}
-                          change={setFieldValue}
+                          onChange={setFieldValue}
                         />
                       </TableCell>
                     </TableRow>
@@ -240,7 +249,7 @@ const Node: React.FC<NodeShape> = ({
                           value={values.email}
                           error={Boolean(errors.email)}
                           helper={errors.email}
-                          change={setFieldValue}
+                          onChange={setFieldValue}
                         />
                       </TableCell>
                     </TableRow>

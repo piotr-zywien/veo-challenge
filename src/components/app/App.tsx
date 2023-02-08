@@ -9,11 +9,13 @@ import FamilyTree from './FamilyTree';
 const App = () => {
   const [nodes, setNodes] = useState<NodeShape[]>(FamilyTree.nodes);
   const [tree, setTree] = useState<TreeShape>(FamilyTree.tree);
+  const [lastId, setLastId] = useState<number>(FamilyTree.index);
 
-  const setNodesCallback = useCallback((value: NodeShape[]) => setNodes(value), [nodes, tree]);
-  const setTreeCallback = useCallback((value: TreeShape) => setTree(value), [nodes, tree]);
+  const setNodesCallback = useCallback((value: NodeShape[]) => setNodes(value), [nodes]);
+  const setTreeCallback = useCallback((value: TreeShape) => setTree(value), [tree]);
+  const setLastIdCallback = useCallback((value: number) => setLastId(value), [lastId]);
 
-  useEffect(() => {}, [nodes, tree]);
+  useEffect(() => {}, [nodes, tree, lastId]);
 
   return (
     <Tree
@@ -22,6 +24,8 @@ const App = () => {
       treeBr={tree}
       setNodes={setNodesCallback}
       setTree={setTreeCallback}
+      setLastId={setLastIdCallback}
+      lastId={lastId}
     />
   );
 };

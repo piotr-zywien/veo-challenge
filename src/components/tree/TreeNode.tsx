@@ -3,7 +3,7 @@ import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import TableCell from '@mui/material/TableCell';
 
-import Node, { NodeShape } from '../node';
+import Node, { NodeShape, EmptyNode } from '../node';
 import TreeShape from './TreeShape';
 import {
   getNode,
@@ -11,6 +11,7 @@ import {
   deleteNode,
   deleteBranch,
   toggleNode,
+  addChild,
 } from './utils';
 
 const useStyles = makeStyles()(({ spacing }) => ({
@@ -27,6 +28,8 @@ const TreeNode: React.FC<{
   treeBr: TreeShape,
   setNodes: (value: NodeShape[]) => void,
   setTree: (value: TreeShape) => void,
+  setLastId: (value: number) => void,
+  lastId: number,
   depth: number,
   wrapInCell?: boolean | false,
   isLeaf?: boolean | false,
@@ -37,6 +40,8 @@ const TreeNode: React.FC<{
   treeBr,
   setNodes,
   setTree,
+  setLastId,
+  lastId,
   depth,
   wrapInCell,
   isLeaf,
@@ -66,12 +71,28 @@ const TreeNode: React.FC<{
         tree,
       )}),
     );
-    setNodes(
-      [...deleteNode(
+    setNodes([
+      ...deleteNode(
         id,
         nodes,
-      )],
-    );
+    )]);
+  };
+  const onAdd = () => {
+    const newId = lastId + 1;
+    setLastId(newId);
+
+    const newNode = EmptyNode(newId, depth);
+    nodes.push(newNode);
+    setNodes([
+      ...nodes,
+    ]);
+
+    setTree(structuredClone({...addChild(
+      id,
+      newNode,
+      tree,
+    )}));
+
   };
 
   const {
@@ -98,6 +119,7 @@ const TreeNode: React.FC<{
       onToggleSingle={onToggleSingle}
       onCollapse={onCollapse}
       onDelete={onDelete}
+      onAdd={onAdd}
       isLeaf={isLeaf}
     />
   );

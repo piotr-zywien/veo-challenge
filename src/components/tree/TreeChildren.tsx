@@ -38,6 +38,9 @@ const TreeChildren: React.FC<{
   treeBr: TreeShape
   setNodes: (value: NodeShape[]) => void,
   setTree: (value: TreeShape) => void,
+  setLastId: (value: number) => void,
+  lastId: number,
+  setShow: (value: boolean) => void,
   depth?: number,
 }> = ({
   children,
@@ -46,6 +49,9 @@ const TreeChildren: React.FC<{
   treeBr,
   setNodes,
   setTree,
+  setLastId,
+  lastId,
+  setShow,
   depth,
 }) => {
   const { cx, classes } = useStyles();
@@ -86,18 +92,21 @@ const TreeChildren: React.FC<{
     if (from && to) {
       setMargin(from.x - from.p)
       setWidth(to.x - from.x);
+      setShow(margin !== null && width !== null);
     }
   }, [
     tree,
     treeBr,
     from,
     to,
+    margin,
+    width,
   ]);
 
   return (
     <>
       <TableRow className={cx(classes.hidden, {
-        [classes.shown]: children.length > 1 && margin !== null && width !== null,
+        [classes.shown]: children.length > 1,
       })}>
         <TableCell
           padding="none"
@@ -113,9 +122,7 @@ const TreeChildren: React.FC<{
           />
         </TableCell>
       </TableRow>
-      <TableRow className={cx(classes.children, classes.hidden, {
-        [classes.shown]: margin !== null && width !== null,
-      })}>
+      <TableRow className={cx(classes.children)}>
         {children.map((child, index) => {
           let ref = undefined;
           if (index === 0) {
@@ -136,6 +143,8 @@ const TreeChildren: React.FC<{
                 treeBr={child}
                 setNodes={setNodes}
                 setTree={setTree}
+                setLastId={setLastId}
+                lastId={lastId}
                 depth={depth + 1}
               />
             </TableCell>

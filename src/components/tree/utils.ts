@@ -55,6 +55,33 @@ export const deleteBranch = (id: number, tree: TreeShape) => {
   };
 };
 
+export const newNode = (node: NodeShape) => {
+  const { id } = node;
+
+  return ({
+    id,
+  });
+};
+
+export const addChild = (id: number, node: NodeShape, tree: TreeShape) => {
+  const { children } = tree;
+
+  const $children: TreeShape[] = [];
+  if (children) {
+    if (tree.id === id) {
+      $children.push(newNode(node));
+    }
+    children.forEach((child: TreeShape) => {
+      $children.push(addChild(id, node, child));
+    });
+  }
+
+  return {
+    ...tree,
+    children: $children,
+  };
+};
+
 export const getIds = (tree: TreeShape, ids: number[]) => {
   const { id, children } = tree;
   ids.push(id);

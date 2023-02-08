@@ -1,7 +1,7 @@
 interface EditShape {
   name: string,
   value: any,
-  change: (
+  onChange: (
     field: string,
     value: any,
     shouldValidate?: boolean,

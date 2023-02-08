@@ -11,6 +11,7 @@ interface NodeShape {
   onToggleSingle?: () => void,
   onCollapse?: () => void,
   onDelete?: () => void,
+  onAdd?: () => void,
   isLeaf?: boolean | false,
 }
 
