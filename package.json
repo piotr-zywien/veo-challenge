@@ -10,15 +10,18 @@
   "author": "piotr <piotr.zywien@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tss-react": "^4.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "babel-core": "^6.26.3",
     "babel-loader": "^9.1.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
