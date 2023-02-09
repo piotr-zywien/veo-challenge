@@ -5,10 +5,11 @@
       "id": 0,
       "firstName": "Mister",
       "lastName": "Important",
-      "title": "CEO",
-      "department": "Management",
-      "phone": "12345678",
-      "email": "ceo@company.com",
+      "title": "Boss Man",
+      "department": "MGMT",
+      "phone": "53544189",
+      "email": "boss@company.com",
+      "depth": 0,
       "expanded": true
     }
   ],

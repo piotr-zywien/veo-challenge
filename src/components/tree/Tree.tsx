@@ -22,6 +22,7 @@ const Tree: React.FC<{
   setLastId: (value: number) => void,
   lastId: number,
   depth?: number,
+  onSave: () => void,
 }> = ({
   nodes,
   tree,
@@ -31,6 +32,7 @@ const Tree: React.FC<{
   setLastId,
   lastId,
   depth = 0,
+  onSave,
 }) => {
   const { id, children } = treeBr;
   const [show, setShow] = useState<boolean>(false);
@@ -46,6 +48,7 @@ const Tree: React.FC<{
       setLastId={setLastId}
       lastId={lastId}
       depth={depth}
+      onSave={onSave}
       isLeaf
     />
   );
@@ -65,6 +68,7 @@ const Tree: React.FC<{
               setLastId={setLastId}
               lastId={lastId}
               depth={depth}
+              onSave={onSave}
               wrapInCell
             />
           </TableRow>
@@ -79,6 +83,7 @@ const Tree: React.FC<{
             lastId={lastId}
             setShow={setShow}
             depth={depth}
+            onSave={onSave}
           />
         </TableBody>
       </Table>

@@ -16,6 +16,20 @@ const App = () => {
   const setTreeCallback = useCallback((value: TreeShape) => setTree(value), [lastId, nodes, tree]);
   const setLastIdCallback = useCallback((value: number) => setLastId(value), [lastId, nodes, tree]);
 
+  const onSave = () => Requests.onSave({
+    index: lastId,
+    nodes,
+    tree,
+  }).then(({
+      index,
+      nodes,
+      tree,
+    }) => {
+      setNodesCallback(nodes);
+      setTreeCallback(tree);
+      setLastIdCallback(index);
+    });
+
   useLayoutEffect(() => {
     Promise.all([
       Requests.getIndex(),
@@ -28,18 +42,12 @@ const App = () => {
     ]) => {
       setLastIdCallback(index);
       setNodesCallback([...nodes]);
-      setTreeCallback(structuredClone({...tree}));
+      setTreeCallback({...tree});
     });
   }, []);
 
-  // Requests.save({
-  //   index: lastId,
-  //   nodes,
-  //   tree,
-  // });
-
   if (lastId === null || nodes === null || tree === null) return null;
-console.log(lastId, nodes, tree);
+
   return (
     <Tree
       nodes={nodes}
@@ -49,6 +57,7 @@ console.log(lastId, nodes, tree);
       setTree={setTreeCallback}
       setLastId={setLastIdCallback}
       lastId={lastId}
+      onSave={onSave}
     />
   );
 };

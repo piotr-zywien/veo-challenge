@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.get(
   '/veo/getIndex',
   (req, res) => {
+    console.log(fileName);
     jsonFile(fileName, (err, file) => {
       if (err) return err;
       file.get('index').then(response => {

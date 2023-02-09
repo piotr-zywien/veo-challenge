@@ -33,6 +33,7 @@ const TreeNode: React.FC<{
   depth: number,
   wrapInCell?: boolean | false,
   isLeaf?: boolean | false,
+  onSave: () => void,
 }> = ({
   id,
   nodes,
@@ -45,6 +46,7 @@ const TreeNode: React.FC<{
   depth,
   wrapInCell,
   isLeaf,
+  onSave,
 }) => {
   const { classes, cx } = useStyles();
 
@@ -120,6 +122,7 @@ const TreeNode: React.FC<{
       onCollapse={onCollapse}
       onDelete={onDelete}
       onAdd={onAdd}
+      onSave={onSave}
       isLeaf={isLeaf}
     />
   );

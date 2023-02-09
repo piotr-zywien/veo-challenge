@@ -43,6 +43,7 @@ const TreeChildren: React.FC<{
   lastId: number,
   setShow: (value: boolean) => void,
   depth?: number,
+  onSave: () => void,
 }> = ({
   children,
   nodes,
@@ -54,6 +55,7 @@ const TreeChildren: React.FC<{
   lastId,
   setShow,
   depth,
+  onSave,
 }) => {
   const { cx, classes } = useStyles();
   const fromRef = useRef(null);
@@ -149,6 +151,7 @@ const TreeChildren: React.FC<{
                 setLastId={setLastId}
                 lastId={lastId}
                 depth={depth + 1}
+                onSave={onSave}
               />
             </TableCell>
           );

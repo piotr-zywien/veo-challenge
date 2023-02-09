@@ -22,12 +22,12 @@ const getTree = () => Resource.get(
   '/getTree',
 ).then(({ data }) => data);
 
-const save = (payload: {
+const onSave = (payload: {
   index?: number,
   nodes?: NodeShape[],
   tree?: TreeShape,
 }) => Resource.post(
-  '/save',
+  '/onSave',
   payload,
 ).then(({ data }) => data);
 
@@ -35,5 +35,5 @@ export default {
   getIndex,
   getNodes,
   getTree,
-  save,
+  onSave,
 };

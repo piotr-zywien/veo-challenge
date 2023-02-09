@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import EditShape from './EditShape';
 
 
-const useStyles = makeStyles()(({ spacing }) => ({
+const useStyles = makeStyles()(({ spacing, palette }) => ({
   root: {
     width: spacing(18),
   },

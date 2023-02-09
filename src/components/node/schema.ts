@@ -3,18 +3,18 @@ import "yup-phone";
 
 
 const schema = Yup.object({
-  id: Yup
-    .string()
-    .required('ID is required!'),
   firstName: Yup
     .string()
-    .required('First Name is required!'),
+    .required('First Name is required!')
+    .test('len', 'Empty Name is not allowed!', val => val.length > 0),
   lastName: Yup
     .string()
-    .required('Last Name is required!'),
+    .required('Last Name is required!')
+    .test('len', 'Empty Last Name is not allowed!', val => val.length > 0),
   title: Yup
     .string()
-    .required('Title is required!'),
+    .required('Title is required!')
+    .test('len', 'Empty Title is not allowed!', val => val.length > 0),
   department: Yup
     .string()
     .optional(),
@@ -25,9 +25,6 @@ const schema = Yup.object({
     .string()
     .email('Invalid email address!')
     .required('Email is required!'),
-  expanded: Yup
-    .boolean()
-    .required(),
 });
 
 export default schema;

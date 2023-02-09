@@ -12,6 +12,7 @@ interface NodeShape {
   onCollapse?: () => void,
   onDelete?: () => void,
   onAdd?: () => void,
+  onSave?: () => void,
   isLeaf?: boolean | false,
 }
 

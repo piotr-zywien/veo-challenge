@@ -54,7 +54,7 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
   addButton: {
     color: palette.primary.light,
   },
-  saveButton: {
+  onSaveButton: {
     color: 'green',
   },
   deleteButton: {
@@ -72,6 +72,9 @@ const useStyles = makeStyles()(({ spacing, palette, shadows }) => ({
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     padding: spacing(1),
+  },
+  actions: {
+    textAlign: 'right',
   },
   label: {
     color: palette.primary.main,
@@ -110,6 +113,7 @@ const Node: React.FC<NodeShape> = ({
   onCollapse,
   onDelete,
   onAdd,
+  onSave,
   isLeaf,
 }: NodeShape ) => {
   const { cx, classes, theme } = useStyles();
@@ -128,11 +132,23 @@ const Node: React.FC<NodeShape> = ({
   const formik: FormikProps<NodeShape> = useFormik<NodeShape>({
     initialValues,
     validationSchema: schema,
-    onSubmit: values => {},
+    onSubmit: (values: NodeShape) => {
+      onSave();
+    },
     enableReinitialize: true,
   });
 
-  const { setFieldValue, values, errors } = formik;
+  const {
+    setFieldValue,
+    values,
+    errors,
+    dirty,
+    isValid,
+    handleSubmit,
+    isSubmitting,
+  } = formik;
+
+  // useLayoutEffect(() => {}, []);
 
   return (
     <div className={classes.root}>
@@ -158,7 +174,7 @@ const Node: React.FC<NodeShape> = ({
               <span className={classes.label}>ID </span>
               <span className={classes.info}>{values.id}</span>
             </TableCell>
-            <TableCell padding="none" className={classes.cell}>
+            <TableCell padding="none" className={cx(classes.cell, classes.actions)}>
               <IconButton
                 className={classes.addButton}
                 onClick={(event) => {
@@ -168,7 +184,11 @@ const Node: React.FC<NodeShape> = ({
               >
                 <AddCircleIcon />
               </IconButton>
-              <IconButton className={classes.saveButton}>
+              <IconButton
+                className={classes.onSaveButton}
+                // onClick={handleSubmit}
+                disabled={!dirty || !isValid || isSubmitting}
+              >
                 <SaveIcon />
               </IconButton>
               <IconButton
@@ -177,6 +197,7 @@ const Node: React.FC<NodeShape> = ({
                   event.stopPropagation();
                   onDelete();
                 }}
+                disabled={depth === 0}
               >
                 <DeleteIcon />
               </IconButton>
